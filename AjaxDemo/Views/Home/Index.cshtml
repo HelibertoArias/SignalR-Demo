@@ -1,0 +1,73 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome to Pooling demo</h1>
+
+
+
+    <form>
+
+        <div class="row">
+            <div class="form-group col-md-6">
+                <label htmlFor="product">Item</label>
+                <input type="text"
+                       id="product"
+                       class="form-control"
+                       value="Laptop" />
+            </div>
+
+        </div>
+
+
+        <div class="row">
+            <div class="form-group col-md-6">
+                <label htmlFor="quantity">Quantity</label>
+                <input type="text"
+                       id="quantity"
+                       class="form-control"
+                       value="1" />
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <button id="submit" type="submit" class="btn btn-primary">
+                    Buy something
+                </button>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div id="status"></div>
+            </div>
+        </div>
+    </form>
+
+
+    <script>
+
+        document.getElementById("submit").addEventListener("click", e => {
+        e.preventDefault();
+
+        const product = document.getElementById("product").value;
+        const quantity = document.getElementById("quantity").value;
+
+            fetch("/api/Orders",
+            {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify( { product, quantity } )
+            })
+            .then(response => {
+
+                const statusDiv = document.getElementById("status");
+                statusDiv.innerHTML ="Your order has been received"
+            });
+
+        });
+    </script>
+</div>
