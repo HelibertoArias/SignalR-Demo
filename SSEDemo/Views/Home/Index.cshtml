@@ -1,0 +1,107 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome to Server Side Events</h1>
+
+
+
+    <form>
+
+        <div class="row">
+            <div class="form-group col-md-6">
+                <label htmlFor="product">Item</label>
+                <input type="text"
+                       id="product"
+                       class="form-control"
+                       value="Laptop" />
+            </div>
+
+        </div>
+
+
+        <div class="row">
+            <div class="form-group col-md-6">
+                <label htmlFor="quantity">Quantity</label>
+                <input type="text"
+                       id="quantity"
+                       class="form-control"
+                       value="1" />
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mt-4">
+                <button id="submit" type="submit" class="btn btn-primary">
+                    Buy something
+                </button>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-md-6 mt-4">
+                <div id="status"></div>
+            </div>
+        </div>
+    </form>
+
+
+    <script>
+
+
+        listen = (id) => {
+
+            if (!!window.EventSource) {
+                var source = new EventSource(`api/Orders/${id}`);
+
+                source.addEventListener('message', function (e) {
+
+                const statusDiv = document.getElementById("status");
+                statusDiv.innerHTML = event.data;
+
+            }, false)
+
+            source.addEventListener('open', function (e) {
+                console.log(e);
+                }, false)
+
+            source.addEventListener('error', function (e) {
+                if (e.eventPhase == EventSource.CLOSED)
+                    source.close()
+                if (e.target.readyState == EventSource.CLOSED) {
+                    console.log("Disconnected");
+                }
+                else if (e.target.readyState == EventSource.CONNECTING) {
+                    console.log("Connecting...");
+                }
+                }, false)
+            } else {
+                console.log("Your browser doesn't support SSE")
+            }
+
+
+        }
+
+
+
+        document.getElementById("submit").addEventListener("click", e => {
+            e.preventDefault();
+
+            const product = document.getElementById("product").value;
+            const quantity = document.getElementById("quantity").value;
+
+                fetch("/api/Orders",
+                {
+                    method: "POST",
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify( { product, quantity } )
+                })
+                .then(response => response.text())
+                .then(orderId => listen( orderId));
+        });
+
+
+    </script>
+</div>
