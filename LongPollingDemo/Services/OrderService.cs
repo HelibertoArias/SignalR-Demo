@@ -1,4 +1,4 @@
-﻿namespace PoolingDemo.Services
+﻿namespace LongPollingDemo.Services
 {
     public class OrderService
     {
@@ -11,7 +11,11 @@
         public CheckResult GetUpdate(int orderNo)
         {
             if (index >= 4)
-                return new CheckResult { New = false };
+            {
+                
+                return new CheckResult { New = false, Finished = true };
+            }
+                
 
 
             var result = new CheckResult

@@ -1,0 +1,103 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome to Long Pooling demo</h1>
+
+
+
+    <form>
+
+        <div class="row">
+            <div class="form-group col-md-6">
+                <label htmlFor="product">Item</label>
+                <input type="text"
+                       id="product"
+                       class="form-control"
+                       value="Laptop" />
+            </div>
+
+        </div>
+
+
+        <div class="row">
+            <div class="form-group col-md-6">
+                <label htmlFor="quantity">Quantity</label>
+                <input type="text"
+                       id="quantity"
+                       class="form-control"
+                       value="1" />
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mt-4">
+                <button id="submit" type="submit" class="btn btn-primary">
+                    Buy something
+                </button>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-md-6 mt-4">
+                <div id="status"></div>
+            </div>
+        </div>
+    </form>
+
+
+    <script>
+
+         pollWithTimeout = (url, options, timeout = 9000) => {
+            return Promise.race([
+                fetch(url, options),
+                new Promise((_, reject) =>
+                    setTimeout(() => reject(new Error('timeout')), timeout)
+                )
+            ]);
+        }
+
+
+        poll = (orderId) => {
+            pollWithTimeout(`api/Orders/${orderId}`)
+                .then(response => {
+                        if (response.status === 200) {
+                            const statusDiv = document.getElementById("status");
+                            response.json().then(j => {
+                                statusDiv.innerHTML = j.update;
+                                if (!j.finished)
+                                    poll(orderId);
+                            });
+                        }
+                    }
+                )
+                .catch(response => poll(orderId));
+        }
+
+
+        document.getElementById("submit").addEventListener("click", e => {
+            e.preventDefault();
+
+            const product = document.getElementById("product").value;
+            const quantity = document.getElementById("quantity").value;
+
+                fetch("/api/Orders",
+                {
+                    method: "POST",
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify( { product, quantity } )
+                })
+                .then(response => response.text())
+                .then(orderId => {
+                        const statusDiv = document.getElementById("status");
+                        statusDiv.innerHTML ="Your order has been received";
+
+                    poll( orderId);
+                });
+        });
+
+               
+    </script>
+</div>

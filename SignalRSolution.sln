@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AjaxDemo", "AjaxDemo\AjaxDe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PoolingDemo", "PoolingDemo\PoolingDemo.csproj", "{2B8A4623-59A2-4C7B-9CA0-497E15F967BF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LongPollingDemo", "LongPollingDemo\LongPollingDemo.csproj", "{6D0C182C-5320-4869-BF39-062DEFBBB49D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{2B8A4623-59A2-4C7B-9CA0-497E15F967BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B8A4623-59A2-4C7B-9CA0-497E15F967BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2B8A4623-59A2-4C7B-9CA0-497E15F967BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D0C182C-5320-4869-BF39-062DEFBBB49D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D0C182C-5320-4869-BF39-062DEFBBB49D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D0C182C-5320-4869-BF39-062DEFBBB49D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D0C182C-5320-4869-BF39-062DEFBBB49D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
