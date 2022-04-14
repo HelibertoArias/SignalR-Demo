@@ -1,0 +1,23 @@
+{
+  "name": "signalrsolution",
+  "version": "1.0.0",
+  "description": "SignalRSolution",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HelibertoArias/SignalR-Demo.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HelibertoArias/SignalR-Demo/issues"
+  },
+  "homepage": "https://github.com/HelibertoArias/SignalR-Demo#readme",
+  "dependencies": {
+    "@microsoft/signalr": "^6.0.4"
+  }
+}

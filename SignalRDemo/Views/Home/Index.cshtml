@@ -1,9 +1,11 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+<script src="~/js/signalr/signalr.js"></script>
+
 
 <div class="text-center">
-    <h1 class="display-4">Welcome to Server Side Events</h1>
+    <h1 class="display-4">Welcome to Websockets</h1>
 
 
 
@@ -50,63 +52,59 @@
 
     <script>
 
+         WebSocket = undefined;
+        EventSource = undefined;
 
-        listen = (id) => {
+        let connection = null;
 
-            if (!!window.EventSource) {
-                // EventSource - Referencia de la API Web
-                // La interfaz EventSource se utiliza para recibir eventos server-side.
-                // Se realiza la conexión a un servidor sobre HTTP y se reciben eventos en 
-                // formato text/event-stream sin tener que cerrar la conexión.
-                // https://mzl.la/37o9JNc
-                var source = new EventSource(`api/Orders/${id}`);
+        //https://bit.ly/3vl1dXf
 
-                source.addEventListener('message', function (e) {
+        setupConnection = () => {
 
+        connection = new signalR.HubConnectionBuilder()
+            .withUrl("/ordershub")
+            .configureLogging(signalR.LogLevel.Information)
+            .build();
+
+        connection.on("ReceiveOrderUpdate",  (update) => {
                 const statusDiv = document.getElementById("status");
-                statusDiv.innerHTML = event.data;
-
-            }, false)
-
-            source.addEventListener('open', function (e) {
-                console.log(e);
-                }, false)
-
-            source.addEventListener('error', function (e) {
-                if (e.eventPhase == EventSource.CLOSED)
-                    source.close()
-                if (e.target.readyState == EventSource.CLOSED) {
-                    console.log("Disconnected");
-                }
-                else if (e.target.readyState == EventSource.CONNECTING) {
-                    console.log("Connecting...");
-                }
-                }, false)
-            } else {
-                console.log("Your browser doesn't support SSE")
+                statusDiv.innerHTML = update;
             }
+        );
+
+        connection.on("NewOrder", function(order) {
+            var statusDiv = document.getElementById("status");
+            statusDiv.innerHTML = "Someone ordered an " + order.product;
+        });
+
+        connection.on("Finished", function() {
+            console.log("erda");
+            connection.stop();
+        });
 
 
-        }
 
+        connection.start()
+        .catch(err => console.error(err.toString()));
+        };
 
+        setupConnection();
 
         document.getElementById("submit").addEventListener("click", e => {
             e.preventDefault();
-
             const product = document.getElementById("product").value;
             const quantity = document.getElementById("quantity").value;
 
-                fetch("/api/Orders",
+            fetch("/api/Orders",
                 {
                     method: "POST",
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify( { product, quantity } )
                 })
                 .then(response => response.text())
-                .then(orderId => listen( orderId));
+                .then(orderNo => {
+                    connection.invoke("GetUpdate", parseInt(orderNo)  );
+                })
         });
-
-
     </script>
 </div>
