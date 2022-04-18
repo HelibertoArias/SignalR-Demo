@@ -1,6 +1,6 @@
-﻿using LongPollingDemo.Services;
+﻿using LongPollingDemo.Models;
+using LongPollingDemo.Services;
 using Microsoft.AspNetCore.Mvc;
-using PoolingDemo.Models;
 
 namespace LongPollingDemo.Controllers
 {

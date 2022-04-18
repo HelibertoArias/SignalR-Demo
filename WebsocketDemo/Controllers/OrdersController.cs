@@ -11,7 +11,7 @@ namespace WebsocketDemo.Controllers
     public class OrdersController : ControllerBase
     {
         private readonly OrderService orderService;
-  
+
 
 
         public OrdersController(OrderService orderService)
@@ -39,7 +39,7 @@ namespace WebsocketDemo.Controllers
             }
             else
             {
-                HttpContext.Response.StatusCode = 400; // Back request
+                HttpContext.Response.StatusCode = 400; // Bad request
             }
         }
 

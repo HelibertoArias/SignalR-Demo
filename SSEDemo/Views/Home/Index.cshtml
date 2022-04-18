@@ -63,10 +63,10 @@
 
                 source.addEventListener('message', function (e) {
 
-                const statusDiv = document.getElementById("status");
-                statusDiv.innerHTML = event.data;
+                    const statusDiv = document.getElementById("status");
+                    statusDiv.innerHTML = event.data;
 
-            }, false)
+                    }, false)
 
             source.addEventListener('open', function (e) {
                 console.log(e);

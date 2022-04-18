@@ -33,9 +33,9 @@ namespace SSEDemo.Controllers
             {
                 result = orderService.GetUpdate(orderNo);
 
-                 if (!result.New) continue;
+                if (!result.New) continue;
 
-                 // data is required
+                // data is required
                 await Response.WriteAsync($"data: {result.Update}\r\r");
 
                 await Response.Body.FlushAsync();
