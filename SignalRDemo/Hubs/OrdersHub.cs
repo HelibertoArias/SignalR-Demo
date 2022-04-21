@@ -1,11 +1,20 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.SignalR;
+﻿using Microsoft.AspNetCore.SignalR;
+using SignalRDemo.Models;
 using SignalRDemo.Services;
 
 namespace SignalRDemo.Hubs;
 
+// https://docs.microsoft.com/en-us/aspnet/core/signalr/hubs?view=aspnetcore-6.0
+
+public interface IOrderClient
+{
+    Task NewOrder(Order order);
+    Task ReceiveOrderUpdate(string Update);
+    Task Finished();
+}
+
 // [Authorize]
-public class OrdersHub : Hub
+public class OrdersHub : Hub<IOrderClient>
 {
     private readonly OrderService orderService;
 
@@ -26,11 +35,12 @@ public class OrdersHub : Hub
             if (result.New)
             {
                 // All, clients, groups, caller and so on.
-                await Clients.Caller.SendAsync("ReceiveOrderUpdate", result.Update);
+                await Clients.Caller.ReceiveOrderUpdate(result.Update);
+
             }
         } while (!result.Finished);
 
-        await Clients.Caller.SendAsync("Finished");
+        await Clients.Caller.Finished();
     }
 
     public override async Task OnConnectedAsync()
